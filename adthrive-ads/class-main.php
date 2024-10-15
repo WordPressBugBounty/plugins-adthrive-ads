@@ -147,12 +147,4 @@ class Main {
 			set_transient( 'wp_adthrive_updated', 1 );
 		}
 	}
-
-	/**
-	 * Filter_update_checks
-	 */
-	public function filter_update_checks( $url ) {
-		$url = $url . \AdThrive_Ads\Options::get( 'site_id' );
-		return $url;
-	}
 }

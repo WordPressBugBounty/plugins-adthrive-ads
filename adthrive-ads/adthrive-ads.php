@@ -7,7 +7,7 @@
  * Plugin Name: Raptive Ads
  * Plugin URI: http://www.raptive.com
  * Description: Raptive Ads
- * Version: 3.6.2
+ * Version: 3.6.3
  * Author: Raptive
  * Author URI: http://www.raptive.com
  * License: GPL2
@@ -30,13 +30,11 @@
 
 defined( 'ABSPATH' ) || die;
 
-define( 'ADTHRIVE_ADS_VERSION', '3.6.2' );
+define( 'ADTHRIVE_ADS_VERSION', '3.6.3' );
 define( 'ADTHRIVE_ADS_FILE', __FILE__ );
 define( 'ADTHRIVE_ADS_PATH', plugin_dir_path( ADTHRIVE_ADS_FILE ) );
 define( 'ADTHRIVE_ADS_URL', trailingslashit( plugin_dir_url( ADTHRIVE_ADS_FILE ) ) );
 define( 'ADTHRIVE_PHP_INT_MIN', ~PHP_INT_MAX );
-
-require 'plugin_update_check.php';
 
 /**
  * Output the minimum version error message
@@ -71,10 +69,5 @@ if ( version_compare( phpversion(), '5.6', '<' ) || version_compare( $wp_version
 
 	require_once 'class-main.php';
 
-	$adthrive_ads = new AdThrive_Ads\Main();
-
-	// phpcs:disable
-	$update_checker = new PluginUpdateChecker_2_0( 'https://ads.adthrive.com/api/v1/host/plugin/', ADTHRIVE_ADS_FILE, 'adthrive-ads', 1 );
-	$update_checker->addURLPathFilter(array($adthrive_ads, 'filter_update_checks'));
-	// phpcs:enable
+	new AdThrive_Ads\Main();
 }
