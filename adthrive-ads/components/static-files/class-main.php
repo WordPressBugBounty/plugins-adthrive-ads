@@ -28,21 +28,9 @@ class Main {
 		if ( is_404() ) {
 			$paths = array(
 				'/ads.txt',
-				'/adcentric/ifr_b.html',
-				'/adcom/aceFIF.html',
-				'/adinterax/adx-iframe-v2.html',
-				'/atlas/atlas_rm.htm',
 				'/doubleclick/DARTIframe.html',
-				'/eyereturn/eyereturn.html',
-				'/ifrm/cwfl.htm',
-				'/klipmart/km_ss.html',
-				'/linkstorm/linkstorm_certified.html',
-				'/pointroll/PointRollAds.htm',
 				'/rubicon/rp-smartfile.html',
-				'/saymedia/iframebuster.html',
-				'/smartadserver/iframeout.html',
 				'/undertone/UT_IFRAME_buster.html',
-				'/viewpoint/vwpt.html',
 			);
 
 			$uri = filter_input( INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL );

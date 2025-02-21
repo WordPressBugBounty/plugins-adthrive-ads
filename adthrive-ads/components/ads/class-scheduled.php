@@ -24,8 +24,6 @@ class Scheduled {
 
 		add_action( 'upgrader_process_complete', array( $this, 'plugin_upgraded' ), 10, 2 );
 
-		add_action( 'rest_api_init', array( $this, 'register_route' ) );
-
 		add_filter( 'adthrive_ads_updated', array( $this, 'options_updated' ), 10, 3 );
 	}
 
@@ -45,30 +43,6 @@ class Scheduled {
 
 		if ( isset( $_GET['atFileReset'] ) && 'true' === sanitize_text_field( wp_unslash( $_GET['atFileReset'] ) ) && $this->should_save_site_ads() ) {
 			$this->site_ads_files_reset();
-		}
-	}
-
-	/**
-	 * Register API routes
-	 */
-	public function register_route() {
-		$cls_optimization = \AdThrive_Ads\Options::get( 'cls_optimization' );
-
-		if ( 'on' === $cls_optimization ) {
-			register_rest_route( 'adthrive-ads/v1', '/reset/cls',
-				array(
-					'method'   => 'GET',
-					'callback' => array( &$this, 'cls_file_reset' ),
-					'permission_callback' => '__return_true',
-				) );
-		}
-		if ( $this->should_save_site_ads() ) {
-			register_rest_route( 'adthrive-ads/v1', '/reset/siteads',
-				array(
-					'method'   => 'GET',
-					'callback' => array( &$this, 'site_ads_files_reset' ),
-					'permission_callback' => '__return_true',
-				) );
 		}
 	}
 
