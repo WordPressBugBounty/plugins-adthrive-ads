@@ -38,6 +38,13 @@ class Main {
 
 		add_action( 'wp_ajax_adthrive_terms', array( $this, 'ajax_terms' ) );
 
+		add_filter( 'get_pagenum_link', array( $this, 'remove_hem_query_params' ), 11 );
+
+		add_filter( 'paginate_links', array( $this, 'remove_hem_query_params' ), 11 );
+
+		add_filter( 'wp_paginate_link', array( $this, 'remove_hem_query_params' ), 11 );
+
+		add_filter( 'wp_pagenavi', array( $this, 'remove_hem_query_params' ), 11 );
 	}
 
 	/**
@@ -147,6 +154,13 @@ class Main {
 		}
 
 		return $classes;
+	}
+
+	/**
+	 * Remove hem query params
+	 */
+	public function remove_hem_query_params( $url ) {
+		return remove_query_arg( array( 'adt_ei', 'adt_eih', 'sh_kit' ), $url );
 	}
 
 	/**

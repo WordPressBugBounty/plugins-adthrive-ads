@@ -33,6 +33,9 @@ Raptive is a strategic partner equipping independent creators and enterprise pub
 1. Use the Raptive->Ads screen to set your Site ID
 
 == Changelog ==
+= 3.7.2 =
+* Improved Pagination
+
 = 3.7.1 =
 * Security patch
 
