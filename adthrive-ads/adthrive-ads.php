@@ -7,7 +7,7 @@
  * Plugin Name: Raptive Ads
  * Plugin URI: http://www.raptive.com
  * Description: Raptive Ads
- * Version: 3.7.2
+ * Version: 3.7.3
  * Author: Raptive
  * Author URI: http://www.raptive.com
  * License: GPL2
@@ -30,7 +30,7 @@
 
 defined( 'ABSPATH' ) || die;
 
-define( 'ADTHRIVE_ADS_VERSION', '3.7.2' );
+define( 'ADTHRIVE_ADS_VERSION', '3.7.3' );
 define( 'ADTHRIVE_ADS_FILE', __FILE__ );
 define( 'ADTHRIVE_ADS_PATH', plugin_dir_path( ADTHRIVE_ADS_FILE ) );
 define( 'ADTHRIVE_ADS_URL', trailingslashit( plugin_dir_url( ADTHRIVE_ADS_FILE ) ) );
