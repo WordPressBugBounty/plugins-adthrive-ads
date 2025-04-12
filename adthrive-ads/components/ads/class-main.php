@@ -574,8 +574,9 @@ class Main {
 	 */
 	public function get_remote_cls_file_url( $filename, $data ) {
 		$remote_cls_hash = $this->get_remote_cls_hash();
+
 		if ( '' !== $remote_cls_hash ) {
-			return 'https://ads.adthrive.com/builds/core/' . $remote_cls_hash . '/js/cls/' . $filename . '.min.js?ts=' . strval( time() );
+			return esc_url( 'https://ads.adthrive.com/builds/core/' . $remote_cls_hash . '/js/cls/' . $filename . '.min.js?ts=' . strval( time() ) );
 		}
 		return '';
 	}
