@@ -2,7 +2,7 @@
 Contributors: raptive
 Tags: ads raptive
 Requires at least: 4.6.0
-Tested up to: 6.7.2
+Tested up to: 6.8
 Requires PHP: 5.6
 Stable tag: trunk
 License: GPLv2 or later
@@ -33,6 +33,9 @@ Raptive is a strategic partner equipping independent creators and enterprise pub
 1. Use the Raptive->Ads screen to set your Site ID
 
 == Changelog ==
+= 3.7.5 =
+* Tested up to 6.8
+
 = 3.7.4 =
 * Security patch
 
