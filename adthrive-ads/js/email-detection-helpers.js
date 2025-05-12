@@ -100,6 +100,8 @@ async function detectEmails() {
 		}
 	});
 
+	window.adthrive = window.adthrive || {};
+	window.adthrive.cmd = window.adthrive.cmd || [];
 	if (plainTextQueryParam) {
 		if (validateEmail(plainTextQueryParam.value)) {
 			hashEmail(plainTextQueryParam.value).then((hashObj) => {
@@ -108,11 +110,16 @@ async function detectEmails() {
 						value: hashObj,
 						created: Date.now(),
 					};
-					localStorage.setItem(localStorageKey, JSON.stringify(data));
-					localStorage.setItem(
-						localStorageSrcKey,
-						plainTextQueryParam.emsrc
-					);
+					window.adthrive.cmd.push(function () {
+						window.adthrive.api.browserStorage.setInternalLocalStorage(
+							localStorageKey,
+							JSON.stringify(data)
+						);
+						window.adthrive.api.browserStorage.setInternalLocalStorage(
+							localStorageSrcKey,
+							plainTextQueryParam.emsrc
+						);
+					});
 				}
 			});
 		}
@@ -124,9 +131,16 @@ async function detectEmails() {
 			},
 			created: Date.now(),
 		};
-
-		localStorage.setItem(localStorageKey, JSON.stringify(data));
-		localStorage.setItem(localStorageSrcKey, hashedQueryParam.emsrc);
+		window.adthrive.cmd.push(function () {
+			window.adthrive.api.browserStorage.setInternalLocalStorage(
+				localStorageKey,
+				JSON.stringify(data)
+			);
+			window.adthrive.api.browserStorage.setInternalLocalStorage(
+				localStorageSrcKey,
+				hashedQueryParam.emsrc
+			);
+		});
 	}
 
 	plainTextQueryParam &&
