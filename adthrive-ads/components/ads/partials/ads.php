@@ -25,7 +25,7 @@ if ( ! defined( 'ADTHRIVE_ADS_VERSION' ) ) {
 	var s = d.createElement('script');
 	s.async = true;
 	s.referrerpolicy='no-referrer-when-downgrade';
-	s.src = 'https://' + w.adthrive.host + '/sites/<?php esc_attr_e( $data['site_id'] ); ?>/ads.min.js?referrer=' + w.encodeURIComponent(w.location.href) + commitParam + '&cb=' + (Math.floor(Math.random() * 100) + 1) + '<?php echo 'true' === $data['plugin_debug'] ? '&debug=true' : ''; ?>';
+	s.src = 'https://' + w.adthrive.host + '/sites/<?php echo esc_attr( $data['site_id'] ); ?>/ads.min.js?referrer=' + w.encodeURIComponent(w.location.href) + commitParam + '&cb=' + (Math.floor(Math.random() * 100) + 1) + '<?php echo 'true' === $data['plugin_debug'] ? '&debug=true' : ''; ?>';
 	var n = d.getElementsByTagName('script')[0];
 	n.parentNode.insertBefore(s, n);
 })(window, document);

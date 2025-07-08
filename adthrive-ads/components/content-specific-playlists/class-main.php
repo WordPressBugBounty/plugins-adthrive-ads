@@ -24,13 +24,18 @@ class Main {
 	 * @param CMB $cmb A CMB metabox instance
 	 */
 	public function add_options( $cmb ) {
-		$cmb->add_field( array(
-			'name' => __( 'Playlist Management', 'adthrive_ads' ),
-			'desc' => __( 'Enable Category Specific Playlists
-				<br/>Adds categories as classes on posts for Category Specific Playlist functionality', 'adthrive_ads' ),
-			'id' => 'content_specific_playlists',
-			'type' => 'checkbox',
-		) );
+		$cmb->add_field(
+			array(
+				'name' => __( 'Playlist Management', 'adthrive_ads' ),
+				'desc' => __(
+					'Enable Category Specific Playlists
+				<br/>Adds categories as classes on posts for Category Specific Playlist functionality',
+					'adthrive_ads'
+				),
+				'id' => 'content_specific_playlists',
+				'type' => 'checkbox',
+			)
+		);
 
 		return $cmb;
 	}

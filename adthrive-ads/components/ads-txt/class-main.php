@@ -31,7 +31,7 @@ class Main {
 
 		add_filter( 'adthrive_ads_options', array( $this, 'add_options' ), 15, 1 );
 
-		add_filter( 'adthrive_ads_updated', array( $this, 'options_updated' ), 10, 3 );
+		add_filter( 'adthrive_ads_updated', array( $this, 'options_updated' ), 10, 2 );
 	}
 
 	/**
@@ -53,12 +53,14 @@ class Main {
 	 * @param CMB $cmb A CMB metabox instance
 	 */
 	public function add_options( $cmb ) {
-		$cmb->add_field( array(
-			'name' => 'Override ads.txt',
-			'desc' => 'Copies ads.txt to the site root daily. Only use if instructed to do so by Raptive support.',
-			'id' => 'copy_ads_txt',
-			'type' => 'checkbox',
-		) );
+		$cmb->add_field(
+			array(
+				'name' => 'Override ads.txt',
+				'desc' => 'Copies ads.txt to the site root daily. Only use if instructed to do so by Raptive support.',
+				'id' => 'copy_ads_txt',
+				'type' => 'checkbox',
+			)
+		);
 
 		return $cmb;
 	}
@@ -66,7 +68,7 @@ class Main {
 	/**
 	 * Called when the adthrive_ads option is updated
 	 */
-	public function options_updated( $old_value, $value, $option ) {
+	public function options_updated( $old_value, $value ) {
 		if ( isset( $value['copy_ads_txt'] ) && 'on' === $value['copy_ads_txt'] ) {
 			$this->save();
 		} else {

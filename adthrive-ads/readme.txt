@@ -4,7 +4,7 @@ Tags: ads raptive
 Requires at least: 4.6.0
 Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: trunk
+Stable tag: 3.7.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,6 +33,11 @@ Raptive is a strategic partner equipping independent creators and enterprise pub
 1. Use the Raptive->Ads screen to set your Site ID
 
 == Changelog ==
+
+= 3.7.7 =
+* Use IdentityAPI for privacy compliant localStorage access
+* Fix issue with adt_ei url params being cached in pagination links
+
 = 3.7.6 =
 * Ensure browser storage use with user consent
 

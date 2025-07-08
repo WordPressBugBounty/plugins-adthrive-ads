@@ -50,14 +50,15 @@ class Main {
 	 * @param CMB $cmb A CMB metabox instance
 	 */
 	public function add_options( $cmb ) {
-		$cmb->add_field( array(
-			'name' => 'Video Sitemap Redirect',
-			'desc' => 'This will create a redirect from ' . get_site_url() . '/adthrive-video-sitemap to your Raptive-hosted video sitemap',
-			'id' => 'override_video_sitemap',
-			'type' => 'checkbox',
-		) );
+		$cmb->add_field(
+			array(
+				'name' => 'Video Sitemap Redirect',
+				'desc' => 'This will create a redirect from ' . get_site_url() . '/adthrive-video-sitemap to your Raptive-hosted video sitemap',
+				'id' => 'override_video_sitemap',
+				'type' => 'checkbox',
+			)
+		);
 
 		return $cmb;
 	}
-
 }

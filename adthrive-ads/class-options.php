@@ -103,10 +103,11 @@ class Options {
 	 * @param String $page_title The text to be displayed in the title.
 	 * @param String $menu_title The text to be displayed in menu.
 	 * @param String $menu_slug The slug name to refer to this menu by (should be unique for this menu).
-	 * @param callable $function The function to be called to output the content for this page.
+	 * @param callable $callback The function to be called to output the content for this page.
+	 *
 	 * @return false|string The resulting page's hook_suffix, or false if the user does not have the capability required.
 	 */
-	public function add_submenu( $page_title, $menu_title, $menu_slug, $function ) {
+	public function add_submenu( $page_title, $menu_title, $menu_slug, $callback ) {
 		global $submenu;
 
 		if ( ! isset( $submenu['adthrive'] ) ) {
@@ -115,7 +116,7 @@ class Options {
 			add_menu_page( 'Raptive Ads', 'Raptive Ads', 'manage_options', 'adthrive', '', 'dashicons-welcome-widgets-menus', '82.02132013' );
 		}
 
-		return add_submenu_page( 'adthrive', $page_title, $menu_title, 'manage_options', $menu_slug, $function );
+		return add_submenu_page( 'adthrive', $page_title, $menu_title, 'manage_options', $menu_slug, $callback );
 	}
 
 	/**
@@ -125,8 +126,8 @@ class Options {
 	 */
 	public function admin_page_display() {
 		?>
-		<div class="wrap cmb2_options_page <?php esc_attr_e( self::$key ); ?>">
-			<h2><?php esc_html_e( get_admin_page_title() ); ?></h2>
+		<div class="wrap cmb2_options_page <?php echo esc_attr( self::$key ); ?>">
+			<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
 			<?php cmb2_metabox_form( $this->metabox_id, self::$key, array( 'cmb_styles' => false ) ); ?>
 		</div>
 		<?php
@@ -138,14 +139,16 @@ class Options {
 	 * @since  1.0.0
 	 */
 	public function add_options_page_metabox() {
-		$cmb = new_cmb2_box( array(
-			'id' => $this->metabox_id,
-			'hookup' => false,
-			'show_on' => array(
-				'key' => 'options-page',
-				'value' => array( self::$key ),
-			),
-		) );
+		$cmb = new_cmb2_box(
+			array(
+				'id' => $this->metabox_id,
+				'hookup' => false,
+				'show_on' => array(
+					'key' => 'options-page',
+					'value' => array( self::$key ),
+				),
+			)
+		);
 
 		apply_filters( 'adthrive_ads_options', $cmb );
 	}
@@ -173,31 +176,34 @@ class Options {
 	 * CMB2 is loaded (cmb2/includes/CMB2_Options.php).
 	 *
 	 * @since 1.0.0
-	 * @param String $field     Options array field name
-	 * @param String $default   Default value
-	 * @return mixed            Option value
+	 * @param String $field Options array field name
+	 * @param String $default_value Default value
+	 *
+	 * @return mixed Option value
 	 */
-	public static function get( $field = 'all', $default = false ) {
+	public static function get( $field = 'all', $default_value = false ) {
 		$opts = self::all();
 
 		if ( 'all' === $field ) {
 			return $opts;
 		} elseif ( is_array( $opts ) && array_key_exists( $field, $opts ) ) {
-			return false !== $opts[ $field ] ? $opts[ $field ] : $default;
+			return false !== $opts[ $field ] ? $opts[ $field ] : $default_value;
 		}
 
-		return $default;
+		return $default_value;
 	}
 
 	/**
 	 * Get all option values.
 	 *
 	 * @since 1.0.0
-	 * @param String $default   Default value
-	 * @return mixed            Option value
+	 *
+	 * @param String $default_value Default value
+	 *
+	 * @return mixed Option value
 	 */
-	public static function all( $default = null ) {
-		return get_option( self::$key, $default );
+	public static function all( $default_value = null ) {
+		return get_option( self::$key, $default_value );
 	}
 
 	/**

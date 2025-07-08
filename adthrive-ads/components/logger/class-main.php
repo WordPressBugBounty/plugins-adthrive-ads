@@ -18,7 +18,6 @@ class Main {
 	public function setup() {
 		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'adthrive_daily_event', array( $this, 'log_versions' ) );
-
 	}
 
 	/**
@@ -45,13 +44,15 @@ class Main {
 				'deployment' => '',
 				'message' => 'versions',
 				'pageUrl' => '',
-				'body' => wp_json_encode( array(
-					'plugin' => ADTHRIVE_ADS_VERSION,
-					'wp' => get_bloginfo( 'version' ),
-					'php' => phpversion(),
-					'autoUpdate' => $this->is_auto_update(),
-					'noai' => $this->get_noai_value(),
-				) ),
+				'body' => wp_json_encode(
+					array(
+						'plugin' => ADTHRIVE_ADS_VERSION,
+						'wp' => get_bloginfo( 'version' ),
+						'php' => phpversion(),
+						'autoUpdate' => $this->is_auto_update(),
+						'noai' => $this->get_noai_value(),
+					)
+				),
 			);
 
 			$request = wp_remote_get( 'https://logger.adthrive.com/wordpress?' . http_build_query( $data ) );
@@ -63,8 +64,9 @@ class Main {
 	 */
 	private function is_auto_update() {
 		$plugin_name = explode( '/', plugin_basename( __FILE__ ) )[0];
-		$auto_updates = array_filter(get_site_option( 'auto_update_plugins', array() ),
-			function( $plugin ) use ( $plugin_name ) {
+		$auto_updates = array_filter(
+			get_site_option( 'auto_update_plugins', array() ),
+			function ( $plugin ) use ( $plugin_name ) {
 				return strpos( $plugin, $plugin_name ) !== false;
 			}
 		);

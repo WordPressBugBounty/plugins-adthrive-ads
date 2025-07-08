@@ -96,7 +96,7 @@ class Main {
 			$taxonomy = sanitize_text_field( wp_unslash( $_GET['taxonomy'] ) );
 		}
 
-		wp_send_json( $this->get_term_selectize( $taxonomy, array( 'search' => $query ) ) );
+		wp_send_json( $this->get_term_selectize( $taxonomy, $query ) );
 	}
 
 	/**
@@ -207,51 +207,65 @@ class Main {
 	 * Add fields to the options metabox for page and posts
 	 */
 	public function all_objects() {
-		$post_meta = new_cmb2_box( array(
-			'id' => 'adthrive_ads_object_metabox',
-			'title' => __( 'Raptive Ads', 'adthrive_ads' ),
-			'object_types' => self::OBJECT_TYPES,
-		) );
+		$post_meta = new_cmb2_box(
+			array(
+				'id' => 'adthrive_ads_object_metabox',
+				'title' => __( 'Raptive Ads', 'adthrive_ads' ),
+				'object_types' => self::OBJECT_TYPES,
+			)
+		);
 
-		$post_meta->add_field( array(
-			'name' => __( 'Disable all ads', 'adthrive_ads' ),
-			'id' => 'adthrive_ads_disable',
-			'type' => 'checkbox',
-		) );
+		$post_meta->add_field(
+			array(
+				'name' => __( 'Disable all ads', 'adthrive_ads' ),
+				'id' => 'adthrive_ads_disable',
+				'type' => 'checkbox',
+			)
+		);
 
-		$post_meta->add_field( array(
-			'name' => __( 'Disable content ads', 'adthrive_ads' ),
-			'id' => 'adthrive_ads_disable_content_ads',
-			'type' => 'checkbox',
-		) );
+		$post_meta->add_field(
+			array(
+				'name' => __( 'Disable content ads', 'adthrive_ads' ),
+				'id' => 'adthrive_ads_disable_content_ads',
+				'type' => 'checkbox',
+			)
+		);
 
-		$post_meta->add_field( array(
-			'name' => __( 'Disable auto-insert video players', 'adthrive_ads' ),
-			'id' => 'adthrive_ads_disable_auto_insert_videos',
-			'type' => 'checkbox',
-		) );
+		$post_meta->add_field(
+			array(
+				'name' => __( 'Disable auto-insert video players', 'adthrive_ads' ),
+				'id' => 'adthrive_ads_disable_auto_insert_videos',
+				'type' => 'checkbox',
+			)
+		);
 
-		$post_meta->add_field( array(
-			'name' => __( 'Re-enable ads on', 'adthrive_ads' ),
-			'desc' => __( 'All ads on this post will be enabled on the specified date', 'adthrive_ads' ),
-			'id'   => 'adthrive_ads_re_enable_ads_on',
-			'type' => 'text_date_timestamp',
-		) );
+		$post_meta->add_field(
+			array(
+				'name' => __( 'Re-enable ads on', 'adthrive_ads' ),
+				'desc' => __( 'All ads on this post will be enabled on the specified date', 'adthrive_ads' ),
+				'id'   => 'adthrive_ads_re_enable_ads_on',
+				'type' => 'text_date_timestamp',
+			)
+		);
 
 		if ( \AdThrive_Ads\Options::get( 'disable_video_metadata' ) === 'on' ) {
-			$post_meta->add_field( array(
-				'name' => __( 'Enable Video Metadata', 'adthrive_ads' ),
-				'desc' => __( 'Enable adding metadata to video player on this post', 'adthrive_ads' ),
-				'id'   => 'adthrive_ads_enable_metadata',
-				'type' => 'checkbox',
-			) );
+			$post_meta->add_field(
+				array(
+					'name' => __( 'Enable Video Metadata', 'adthrive_ads' ),
+					'desc' => __( 'Enable adding metadata to video player on this post', 'adthrive_ads' ),
+					'id'   => 'adthrive_ads_enable_metadata',
+					'type' => 'checkbox',
+				)
+			);
 		} else {
-			$post_meta->add_field( array(
-				'name' => __( 'Disable Video Metadata', 'adthrive_ads' ),
-				'desc' => __( 'Disable adding metadata to video player on this post', 'adthrive_ads' ),
-				'id'   => 'adthrive_ads_disable_metadata',
-				'type' => 'checkbox',
-			) );
+			$post_meta->add_field(
+				array(
+					'name' => __( 'Disable Video Metadata', 'adthrive_ads' ),
+					'desc' => __( 'Disable adding metadata to video player on this post', 'adthrive_ads' ),
+					'id'   => 'adthrive_ads_disable_metadata',
+					'type' => 'checkbox',
+				)
+			);
 		}
 
 		if ( \AdThrive_Ads\Options::get( 'disable_admin_ads' ) === 'on' ) {
@@ -273,7 +287,6 @@ class Main {
 				)
 			);
 		}
-
 	}
 
 	/**
@@ -282,51 +295,61 @@ class Main {
 	 * @param CMB $cmb A CMB metabox instance
 	 */
 	public function add_options( $cmb ) {
-		$cmb->add_field( array(
-			'name' => __( 'Site Id', 'adthrive_ads' ),
-			'desc' => __( 'Add your Raptive Site ID', 'adthrive_ads' ),
-			'id' => 'site_id',
-			'type' => 'text',
-			'attributes' => array(
-				'required' => 'required',
-				'pattern' => '[0-9a-f]{24}',
-				'title' => 'The site id needs to match the one provided by Raptive exactly',
-			),
-		) );
+		$cmb->add_field(
+			array(
+				'name' => __( 'Site Id', 'adthrive_ads' ),
+				'desc' => __( 'Add your Raptive Site ID', 'adthrive_ads' ),
+				'id' => 'site_id',
+				'type' => 'text',
+				'attributes' => array(
+					'required' => 'required',
+					'pattern' => '[0-9a-f]{24}',
+					'title' => 'The site id needs to match the one provided by Raptive exactly',
+				),
+			)
+		);
 
-		$cmb->add_field( array(
-			'name' => 'Disabled for Categories',
-			'desc' => 'Disable ads for the selected categories.',
-			'id' => 'disabled_categories',
-			'type' => 'text',
-			'escape_cb' => array( $this, 'selectize_escape' ),
-			'sanitization_cb' => array( $this, 'selectize_sanitize' ),
-		) );
+		$cmb->add_field(
+			array(
+				'name' => 'Disabled for Categories',
+				'desc' => 'Disable ads for the selected categories.',
+				'id' => 'disabled_categories',
+				'type' => 'text',
+				'escape_cb' => array( $this, 'selectize_escape' ),
+				'sanitization_cb' => array( $this, 'selectize_sanitize' ),
+			)
+		);
 
-		$cmb->add_field( array(
-			'name' => 'Disabled for Tags',
-			'desc' => 'Disable ads for the selected tags.',
-			'id' => 'disabled_tags',
-			'type' => 'text',
-			'escape_cb' => array( $this, 'selectize_escape' ),
-			'sanitization_cb' => array( $this, 'selectize_sanitize' ),
-		) );
+		$cmb->add_field(
+			array(
+				'name' => 'Disabled for Tags',
+				'desc' => 'Disable ads for the selected tags.',
+				'id' => 'disabled_tags',
+				'type' => 'text',
+				'escape_cb' => array( $this, 'selectize_escape' ),
+				'sanitization_cb' => array( $this, 'selectize_sanitize' ),
+			)
+		);
 
-		$cmb->add_field( array(
-			'name' => 'Disable Video Metadata',
-			'desc' => 'Disable adding metadata to video players. Caution: This is a site-wide change. Only choose if metadata is being loaded another way.',
-			'id' => 'disable_video_metadata',
-			'type' => 'checkbox',
-		) );
+		$cmb->add_field(
+			array(
+				'name' => 'Disable Video Metadata',
+				'desc' => 'Disable adding metadata to video players. Caution: This is a site-wide change. Only choose if metadata is being loaded another way.',
+				'id' => 'disable_video_metadata',
+				'type' => 'checkbox',
+			)
+		);
 
-		$cmb->add_field( array(
-			'name' => 'CLS Optimization',
-			'desc' => "Enable solution to reduce ad-related CLS
+		$cmb->add_field(
+			array(
+				'name' => 'CLS Optimization',
+				'desc' => "Enable solution to reduce ad-related CLS
 			</br>Clear your site's cache after saving this setting to apply the update across your site. Get more details on CLS optimization <a href='https://help.raptive.com/hc/en-us/articles/360048229151' target='_blank'>here.</a>",
-			'id' => 'cls_optimization',
-			'type' => 'checkbox',
-			'default_cb' => array( $this, 'cls_checkbox_default' ),
-		) );
+				'id' => 'cls_optimization',
+				'type' => 'checkbox',
+				'default_cb' => array( $this, 'cls_checkbox_default' ),
+			)
+		);
 
 		$cmb->add_field(
 			array(
@@ -476,7 +499,7 @@ class Main {
 		}
 
 		if ( isset( $data['site_id'] ) && preg_match( '/[0-9a-f]{24}/i', $data['site_id'] ) && ! $thrive_architect_enabled && ! $widget_preview_active ) {
-			$body_classes = $this->body_class( [] );
+			$body_classes = $this->body_class( array() );
 			if ( 'on' === $cls_optimization ) {
 				$cls_data = $this->parse_cls_deployment();
 				$data = array_merge( $data, $cls_data );
@@ -489,9 +512,13 @@ class Main {
 					$decoded_data = json_decode( $data['site_js'] );
 					if ( $this->has_essential_site_ads_keys( $decoded_data ) ) {
 						require 'partials/insertion-includes.php';
-						add_action('wp_head', function() use ( $data ) {
-							$this->insert_cls_file( 'cls-disable-ads', $data );
-						}, 100 );
+						add_action(
+							'wp_head',
+							function () use ( $data ) {
+								$this->insert_cls_file( 'cls-disable-ads', $data );
+							},
+							100
+						);
 
 						if ( ! $disable_all && null !== $decoded_data && isset( $decoded_data->adUnits ) ) {
 							$adunits = $decoded_data->adUnits;
@@ -509,18 +536,26 @@ class Main {
 										$adunit->sequence = 1;
 									}
 									if ( true === $adunit->dynamic->enabled && 1 === $adunit->dynamic->max && 0 === $adunit->dynamic->spacing && 1 === $adunit->sequence ) {
-										add_action('wp_head', function() use ( $data ) {
-											$this->insert_cls_file( 'cls-header-insertion', $data );
-										}, 101 );
+										add_action(
+											'wp_head',
+											function () use ( $data ) {
+												$this->insert_cls_file( 'cls-header-insertion', $data );
+											},
+											101
+										);
 									}
 								}
 							}
 						}
 
-						add_action('wp_footer', function() use ( $data ) {
-							$this->insert_cls_file( 'cls-insertion', $data );
-							$this->check_cls_insertion();
-						}, 1 );
+						add_action(
+							'wp_footer',
+							function () use ( $data ) {
+								$this->insert_cls_file( 'cls-insertion', $data );
+								$this->check_cls_insertion();
+							},
+							1
+						);
 					} else {
 						require 'partials/sync-error.php';
 					}
@@ -572,7 +607,7 @@ class Main {
 	/**
 	 * Get cls file endpoint url for the hash. If no hash specified, then return empty string
 	 */
-	public function get_remote_cls_file_url( $filename, $data ) {
+	public function get_remote_cls_file_url( $filename ) {
 		$remote_cls_hash = $this->get_remote_cls_hash();
 
 		if ( '' !== $remote_cls_hash ) {
@@ -581,7 +616,7 @@ class Main {
 		return '';
 	}
 
-	private $cls_files_inserted = [];
+	private $cls_files_inserted = array();
 	/**
 	 * Inserts cls file content to script tag
 	 * If debug options are enabled, makes request to remote url to fetch cls files.
@@ -593,7 +628,7 @@ class Main {
 		}
 		array_push( $this->cls_files_inserted, $filename );
 
-		$remote_cls_file_url = $this->get_remote_cls_file_url( $filename, $data );
+		$remote_cls_file_url = $this->get_remote_cls_file_url( $filename );
 		// phpcs:disable
 		if ( '' !== $remote_cls_file_url ) {
 			echo "<script data-no-optimize='1' data-cfasync='false' id='" . $filename . "-remote' src='" . $remote_cls_file_url . "'></script>";
@@ -670,19 +705,18 @@ class Main {
 	 * Gets terms and displays them as options
 	 *
 	 * @param  String $taxonomy Taxonomy terms to retrieve. Default is category.
-	 * @param  String|array $args Optional. get_terms optional arguments
+	 * @param  String $search Optional. get_terms optional arguments
+	 *
 	 * @return array An array of options that matches the CMB2 options array
 	 */
-	public function get_term_selectize( $taxonomy = 'category', $args = array() ) {
-		$args['taxonomy'] = $taxonomy;
-		$args = wp_parse_args( $args, array(
-			'taxonomy' => 'category',
-			'number' => 100,
-		) );
-
-		$taxonomy = $args['taxonomy'];
-
-		$terms = (array) get_terms( $taxonomy, $args );
+	public function get_term_selectize( $taxonomy = 'category', $search = '' ) {
+		$terms = (array) get_terms(
+			array(
+				'taxonomy' => $taxonomy,
+				'search' => $search,
+				'number' => 100,
+			)
+		);
 
 		return is_array( $terms ) ? array_map( array( $this, 'get_selectize' ), $terms ) : array();
 	}

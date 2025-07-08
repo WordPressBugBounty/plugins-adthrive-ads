@@ -25,7 +25,7 @@ class Main {
 	 */
 	public function setup() {
 		if ( isset( $this->adthrive_ads['site_id'] ) && isset( $this->adthrive_ads['amp'] ) && 'on' === $this->adthrive_ads['amp'] ) {
-			add_filter( 'amp_content_sanitizers', array( $this, 'add_ad_sanitizer' ), 10, 2 );
+			add_filter( 'amp_content_sanitizers', array( $this, 'add_ad_sanitizer' ), 10, 1 );
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_style' ) );
 		}
 	}
@@ -33,7 +33,7 @@ class Main {
 	/**
 	 * Add the AMP ad sanitizer to inject ads
 	 */
-	public function add_ad_sanitizer( $sanitizer_classes, $post ) {
+	public function add_ad_sanitizer( $sanitizer_classes ) {
 		require_once 'class-ad-injection-sanitizer.php';
 
 		$sanitizer_classes['AdThrive_Ads\Components\AMP\Ad_Injection_Sanitizer'] = array(

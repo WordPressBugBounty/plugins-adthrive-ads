@@ -92,7 +92,7 @@ class Ad_Injection_Sanitizer extends AMP_Base_Sanitizer {
 
 		foreach ( $this->body->getElementsByTagName( '*' ) as $child ) {
 			if ( $spacing > $ad_spacing ) {
-				$content_ads++;
+				++$content_ads;
 
 				$content_ad = $this->create_wrapped_fluid_ad( 'Content', $content_ads, 'adthrive-content' );
 
@@ -124,17 +124,21 @@ class Ad_Injection_Sanitizer extends AMP_Base_Sanitizer {
 	/**
 	 * Creates a fix sized ad component wrapped in a div
 	 */
-	private function create_wrapped_ad( $location, $sequence, $class, $width, $height, $sizes ) {
-		$wrapper = AMP_DOM_Utils::create_node( $this->dom, 'div', [
-			'class' => 'adthrive-ad ' . $class,
-		] );
+	private function create_wrapped_ad( $location, $sequence, $class_name, $width, $height, $sizes ) {
+		$wrapper = AMP_DOM_Utils::create_node(
+			$this->dom,
+			'div',
+			array(
+				'class' => 'adthrive-ad ' . $class_name,
+			)
+		);
 
-		$attributes = [
+		$attributes = array(
 			'width' => $width,
 			'height' => $height,
 			'data-multi-size' => $sizes,
 			'data-multi-size-validation' => 'false',
-		];
+		);
 
 		$ad = $this->create_ad( $location, $sequence, $attributes );
 
@@ -147,18 +151,22 @@ class Ad_Injection_Sanitizer extends AMP_Base_Sanitizer {
 	 * Creates an ad component wrapped in an amp-sticky-ad component
 	 */
 	private function create_sticky_ad( $location, $sequence, $width, $height, $sizes ) {
-		$sticky_ad = AMP_DOM_Utils::create_node( $this->dom, 'amp-sticky-ad', [
-			'layout' => 'nodisplay',
-			'class' => 'adthrive-footer',
-		] );
+		$sticky_ad = AMP_DOM_Utils::create_node(
+			$this->dom,
+			'amp-sticky-ad',
+			array(
+				'layout' => 'nodisplay',
+				'class' => 'adthrive-footer',
+			)
+		);
 
-		$attributes = [
+		$attributes = array(
 			'width' => $width,
 			'height' => $height,
 			'data-multi-size' => $sizes,
 			'data-multi-size-validation' => 'false',
 			'data-enable-refresh' => 30,
-		];
+		);
 
 		$ad = $this->create_ad( $location, $sequence, $attributes );
 
@@ -170,16 +178,20 @@ class Ad_Injection_Sanitizer extends AMP_Base_Sanitizer {
 	/**
 	 * Creates a fuid sized ad component wrapped in a div
 	 */
-	private function create_wrapped_fluid_ad( $location, $sequence, $class ) {
-		$wrapper = AMP_DOM_Utils::create_node( $this->dom, 'div', [
-			'class' => 'adthrive-ad ' . $class,
-		] );
+	private function create_wrapped_fluid_ad( $location, $sequence, $class_name ) {
+		$wrapper = AMP_DOM_Utils::create_node(
+			$this->dom,
+			'div',
+			array(
+				'class' => 'adthrive-ad ' . $class_name,
+			)
+		);
 
-		$attributes = [
+		$attributes = array(
 			'layout' => 'fluid',
 			'height' => 'fluid',
 			'width' => '320',
-		];
+		);
 
 		$ad = $this->create_ad( $location, $sequence, $attributes );
 
@@ -195,19 +207,21 @@ class Ad_Injection_Sanitizer extends AMP_Base_Sanitizer {
 		$ad_unit = $this->ad_unit_prefix . '_' . $location . '_' . $sequence;
 		$slot = '/' . $this->dfp_account . '/' . $ad_unit . '/' . $this->site_id;
 
-		$default = [
+		$default = array(
 			'type' => 'doubleclick',
 			'data-slot' => $slot,
-			'json' => wp_json_encode([
-				'targeting' => [
-					'siteId' => $this->site_id,
-					'location' => $location,
-					'sequence' => $sequence,
-					'refresh' => '00',
-					'amp' => 'true',
-				],
-			]),
-		];
+			'json' => wp_json_encode(
+				array(
+					'targeting' => array(
+						'siteId' => $this->site_id,
+						'location' => $location,
+						'sequence' => $sequence,
+						'refresh' => '00',
+						'amp' => 'true',
+					),
+				)
+			),
+		);
 
 		return AMP_DOM_Utils::create_node( $this->dom, 'amp-ad', array_merge( $default, $attributes ) );
 	}
@@ -241,8 +255,8 @@ class Ad_Injection_Sanitizer extends AMP_Base_Sanitizer {
 		$disable_all = get_post_meta( get_the_ID(), 'adthrive_ads_disable', true );
 		$disable_content_ads = get_post_meta( get_the_ID(), 'adthrive_ads_disable_content_ads', true );
 
-		$disabled_categories = [];
-		$disabled_tags = [];
+		$disabled_categories = array();
+		$disabled_tags = array();
 
 		if ( isset( $adthrive_ads['disabled_categories'] ) ) {
 			$disabled_categories = $adthrive_ads['disabled_categories'];

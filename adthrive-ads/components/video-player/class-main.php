@@ -34,10 +34,8 @@ class Main {
 			if ( ! isset( $enable_meta_in_post[0] ) ) {
 				$add_meta = '';
 			}
-		} else {
-			if ( isset( $disable_meta_in_post[0] ) && 'on' === $disable_meta_in_post[0] ) {
+		} elseif ( isset( $disable_meta_in_post[0] ) && 'on' === $disable_meta_in_post[0] ) {
 				$add_meta = '';
-			}
 		}
 
 		$atts = shortcode_atts(

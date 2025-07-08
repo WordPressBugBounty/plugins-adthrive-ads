@@ -94,14 +94,19 @@ class Main {
 	 * @param CMB $cmb A CMB metabox instance
 	 */
 	public function add_options( $cmb ) {
-		$cmb->add_field( array(
-			'name' => __( 'Web Stories', 'adthrive_ads' ),
-			'desc' => __( 'Enable Web Stories ads
+		$cmb->add_field(
+			array(
+				'name' => __( 'Web Stories', 'adthrive_ads' ),
+				'desc' => __(
+					'Enable Web Stories ads
 				</br>Learn more about monetizing Web Stories <a target="_blank" href="https://help.raptive.com/hc/en-us/articles/360056144432">here</a>.
-			', 'adthrive_ads' ),
-			'id' => 'amp_stories',
-			'type' => 'checkbox',
-		) );
+			',
+					'adthrive_ads'
+				),
+				'id' => 'amp_stories',
+				'type' => 'checkbox',
+			)
+		);
 
 		return $cmb;
 	}

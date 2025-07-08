@@ -58,7 +58,11 @@
           } else {
             const date = new Date();
             date.setTime(date.getTime() + 60 * 5 * 1000);
-            doc.cookie = adBlockerCookieKey + '=true; expires=' + date.toUTCString() + '; path=/';
+            doc.cookie =
+              adBlockerCookieKey +
+              '=true; expires=' +
+              date.toUTCString() +
+              '; path=/';
           }
         }
       };

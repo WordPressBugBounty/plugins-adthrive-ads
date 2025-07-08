@@ -24,7 +24,7 @@ class Scheduled {
 
 		add_action( 'upgrader_process_complete', array( $this, 'plugin_upgraded' ), 10, 2 );
 
-		add_filter( 'adthrive_ads_updated', array( $this, 'options_updated' ), 10, 3 );
+		add_filter( 'adthrive_ads_updated', array( $this, 'options_updated' ), 10, 2 );
 	}
 
 	/**
@@ -325,7 +325,7 @@ class Scheduled {
 	/**
 	 * Called when the adthrive_ads option is updated
 	 */
-	public function options_updated( $old_value, $value, $option ) {
+	public function options_updated( $old_value, $value ) {
 		if ( isset( $value['cls_optimization'] ) && 'on' === $value['cls_optimization'] ) {
 			$this->sync_cls_data();
 			$this->sync_site_ads_data();

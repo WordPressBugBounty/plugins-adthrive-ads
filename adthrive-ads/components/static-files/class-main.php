@@ -35,7 +35,7 @@ class Main {
 
 			$uri = filter_input( INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL );
 
-			$current_path = parse_url( $uri, PHP_URL_PATH );
+			$current_path = wp_parse_url( $uri, PHP_URL_PATH );
 
 			$file = plugin_dir_path( __FILE__ ) . 'partials' . $current_path;
 

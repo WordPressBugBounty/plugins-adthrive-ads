@@ -45,22 +45,24 @@ class Main {
 	 * @param CMB $cmb A CMB metabox instance
 	 */
 	public function add_options( $cmb ) {
-		$cmb->add_field( array(
-			'name' => 'Ad Block Recovery',
-			'desc' => 'Show ads to users with ad blockers enabled. Learn more <a href="https://help.raptive.com/hc/en-us/articles/360039737371/" target="_blank">here.</a>',
-			'id' => 'adblock_recovery',
-			'type' => 'radio_inline',
-			'options' => array(
-				'on' => 'On',
-				'off' => 'Off',
-			),
-			'default' => 'on',
-			'save_field' => ! $this->feature_overidden,
-			'attributes' => array(
-				'readonly' => $this->feature_overidden,
-				'disabled' => $this->feature_overidden,
-			),
-		) );
+		$cmb->add_field(
+			array(
+				'name' => 'Ad Block Recovery',
+				'desc' => 'Show ads to users with ad blockers enabled. Learn more <a href="https://help.raptive.com/hc/en-us/articles/360039737371/" target="_blank">here.</a>',
+				'id' => 'adblock_recovery',
+				'type' => 'radio_inline',
+				'options' => array(
+					'on' => 'On',
+					'off' => 'Off',
+				),
+				'default' => 'on',
+				'save_field' => ! $this->feature_overidden,
+				'attributes' => array(
+					'readonly' => $this->feature_overidden,
+					'disabled' => $this->feature_overidden,
+				),
+			)
+		);
 
 		return $cmb;
 	}

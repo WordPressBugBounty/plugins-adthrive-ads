@@ -26,7 +26,7 @@ class SiteAds {
 			if ( is_array( $response ) ) {
 				return wp_remote_retrieve_body( $response );
 			} else {
-				esc_html_e( 'Bad response when retrieving site ads from environment ' . $site_ads_environment );
+				echo esc_html( 'Bad response when retrieving site ads from environment ' . $site_ads_environment );
 				return null;
 			}
 		}
@@ -63,7 +63,7 @@ class SiteAds {
 			'dev' => 'Dev',
 		);
 		if ( ! isset( $environment_config[ $environment ] ) ) {
-			esc_html_e( 'Query param is not set for environment "' . $environment . '". Update $enviroment_config to include a value for this environment.' );
+			echo esc_html( 'Query param is not set for environment "' . $environment . '". Update $enviroment_config to include a value for this environment.' );
 			return '';
 		}
 		return "&config=$environment_config[$environment]:all";
@@ -79,10 +79,10 @@ class SiteAds {
 		$response = wp_remote_get( $remote );
 		$response_code = wp_remote_retrieve_response_code( $response );
 		if ( 200 !== $response_code ) {
-			esc_html_e( 'Unexpected response code when fetching remote site ads from ' . $remote . '. Response code: ' . $response_code );
+			echo esc_html( 'Unexpected response code when fetching remote site ads from ' . $remote . '. Response code: ' . $response_code );
 		}
 		if ( wp_remote_retrieve_body( $response ) === 'false' ) {
-			esc_html_e( 'Error when fetch remote site ads from ' . $remote . '. Make sure you have siteAds defined for this environment.' );
+			echo esc_html( 'Error when fetch remote site ads from ' . $remote . '. Make sure you have siteAds defined for this environment.' );
 		}
 		return $response;
 	}
