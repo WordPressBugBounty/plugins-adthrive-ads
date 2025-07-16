@@ -512,6 +512,15 @@ class Main {
 					$decoded_data = json_decode( $data['site_js'] );
 					if ( $this->has_essential_site_ads_keys( $decoded_data ) ) {
 						require 'partials/insertion-includes.php';
+
+						add_action(
+							'wp_head',
+							function () use ( $data ) {
+								$this->insert_cls_file( 'comscore-loader', $data );
+							},
+							100
+						);
+
 						add_action(
 							'wp_head',
 							function () use ( $data ) {

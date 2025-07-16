@@ -208,6 +208,7 @@ class Scheduled {
 		$status['insertion'] = \AdThrive_Ads\Options::save_to_option( 'cls-insertion.' . ( $is_stable ? 'stable' : $hash ), $this->get_remote_file( $base_url . 'cls-insertion.min.js' ) );
 		$status['header-insertion'] = \AdThrive_Ads\Options::save_to_option( 'cls-header-insertion.' . ( $is_stable ? 'stable' : $hash ), $this->get_remote_file( $base_url . 'cls-header-insertion.min.js' ) );
 		$status['disable-ads'] = \AdThrive_Ads\Options::save_to_option( 'cls-disable-ads.' . ( $is_stable ? 'stable' : $hash ), $this->get_remote_file( $base_url . 'cls-disable-ads.min.js' ) );
+		$status['comscore-loader'] = \AdThrive_Ads\Options::save_to_option( 'comscore-loader.' . ( $is_stable ? 'stable' : $hash ), $this->get_remote_file( $base_url . 'comscore-loader.min.js' ) );
 		return $status;
 	}
 

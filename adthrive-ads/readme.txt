@@ -4,7 +4,7 @@ Tags: ads raptive
 Requires at least: 4.6.0
 Tested up to: 6.8
 Requires PHP: 5.6
-Stable tag: 3.7.7
+Stable tag: 3.8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,6 +33,9 @@ Raptive is a strategic partner equipping independent creators and enterprise pub
 1. Use the Raptive->Ads screen to set your Site ID
 
 == Changelog ==
+
+= 3.8.0 =
+* Move Raptive's Comscore script into the plugin. This update allows the script to load quicker, providing more accurate tracking and measurement of Raptive traffic.
 
 = 3.7.7 =
 * Use IdentityAPI for privacy compliant localStorage access

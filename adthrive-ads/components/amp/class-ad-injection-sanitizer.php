@@ -275,7 +275,7 @@ class Ad_Injection_Sanitizer extends AMP_Base_Sanitizer {
 		$disable_category = is_array( $disabled_categories ) && array_intersect( $disabled_categories, $category_names );
 		$disable_tag = is_array( $disabled_tags ) && array_intersect( $disabled_tags, $tag_names );
 
-		$disable_email = preg_match( '/([A-Z0-9._%+-]+(@|%(25)*40)[A-Z0-9.-]+\.[A-Z]{2,})/i', filter_input( INPUT_SERVER, 'REQUEST_URI' ) );
+		$disable_email = ! empty( $_SERVER['REQUEST_URI'] ) && preg_match( '/([A-Z0-9._%+-]+(@|%(25)*40)[A-Z0-9.-]+\.[A-Z]{2,})/i', wp_unslash( $_SERVER['REQUEST_URI'] ) );
 
 		return $disable_all || in_array( 'noads', $tag_names, true ) || $disable_category || $disable_tag || $disable_email;
 	}

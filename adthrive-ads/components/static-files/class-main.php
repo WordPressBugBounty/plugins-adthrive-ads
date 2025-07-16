@@ -33,7 +33,7 @@ class Main {
 				'/undertone/UT_IFRAME_buster.html',
 			);
 
-			$uri = filter_input( INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_URL );
+			$uri = ! empty( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '';
 
 			$current_path = wp_parse_url( $uri, PHP_URL_PATH );
 
