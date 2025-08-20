@@ -23,10 +23,10 @@ class Main {
 	 * Add the Ad Block Detection script
 	 */
 	public function adblock_detection() {
-		// phpcs:disable
-		echo "<script>";
-		echo file_get_contents(ADTHRIVE_ADS_PATH . 'js/min/adblock-detection.min.js');
-		echo "</script>";
+		echo '<script>';
+		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo file_get_contents( ADTHRIVE_ADS_PATH . 'js/adblock-detection.min.js' );
 		// phpcs:enable
+		echo '</script>';
 	}
 }

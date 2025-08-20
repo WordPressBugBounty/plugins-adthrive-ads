@@ -25,6 +25,6 @@ class Main {
 	 * popup for the user
 	 */
 	public function add_deactivation_warning() {
-		wp_enqueue_script( 'adthrive-deactivation-warning', plugins_url( 'js/adthrive-deactivation-warning.js', __FILE__ ), array( 'jquery' ), ADTHRIVE_ADS_VERSION, true );
+		wp_enqueue_script( 'adthrive-deactivation-warning', plugins_url( 'js/adthrive-deactivation-warning.min.js', __FILE__ ), array( 'jquery' ), ADTHRIVE_ADS_VERSION, true );
 	}
 }

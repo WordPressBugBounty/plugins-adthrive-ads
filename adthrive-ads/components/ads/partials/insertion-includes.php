@@ -16,9 +16,9 @@
 		line-height: 0;
 	}
 	<?php
-    // phpcs:disable
+		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo $data['site_css'];
-    // phpcs:enable
+		// phpcs:enable
 	?>
 </style>
 <script data-no-optimize="1" data-cfasync="false">
@@ -27,18 +27,16 @@
 		injectedSlots: [],
 		injectedFromPlugin: true,
 		<?php
-			// phpcs:disable
-			echo isset( $data['cls_branch'] ) ? 'branch: \'' . $data['cls_branch'] . '\',' : '';
-			echo isset( $data['cls_bucket'] ) ? 'bucket: \'' . $data['cls_bucket'] . '\',' : '';
-			// phpcs:enable
+			echo isset( $data['cls_branch'] ) ? "branch: '" . esc_js( $data['cls_branch'] ) . "'," : '';
+			echo isset( $data['cls_bucket'] ) ? "bucket: '" . esc_js( $data['cls_bucket'] ) . "'," : '';
 		?>
 		<?php if ( in_array( 'adthrive-disable-video', $body_classes, true ) ) : ?>
 			videoDisabledFromPlugin: true,
 		<?php endif; ?>
 	};
 	<?php
-        // phpcs:disable
+		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
 		echo 'window.adthriveCLS.siteAds = ' . $data['site_js'] . ';';
-        // phpcs:enable
+		// phpcs:enable
 	?>
 </script>

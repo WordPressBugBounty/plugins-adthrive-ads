@@ -30,7 +30,6 @@ class Main {
 				'/ads.txt',
 				'/doubleclick/DARTIframe.html',
 				'/rubicon/rp-smartfile.html',
-				'/undertone/UT_IFRAME_buster.html',
 			);
 
 			$uri = ! empty( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '';

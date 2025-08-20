@@ -29,7 +29,7 @@ class Main {
 	 * Load the required dependencies for this plugin.
 	 */
 	private function load_dependencies() {
-		require_once 'cmb2/init.php';
+		require_once 'vendor/cmb2/init.php';
 	}
 
 	/**
@@ -46,7 +46,6 @@ class Main {
 			'AdThrive_Ads\Components\Ads\Scheduled',
 			'AdThrive_Ads\Components\Ads_Txt\Main',
 			'AdThrive_Ads\Components\Video_Sitemap\Main',
-			'AdThrive_Ads\Components\AMP\Main',
 			'AdThrive_Ads\Components\AMP_Stories\Main',
 			'AdThrive_Ads\Components\Static_Files\Main',
 			'AdThrive_Ads\Components\User_ID\Main',
@@ -88,11 +87,11 @@ class Main {
 	 * Add scripts and styles
 	 */
 	public function admin_enqueue_scripts() {
-		wp_enqueue_style( 'adthrive-ads-selectize', plugins_url( 'css/selectize.css', ADTHRIVE_ADS_FILE ), false, ADTHRIVE_ADS_VERSION );
-		wp_enqueue_script( 'adthrive-ads-selectize', plugins_url( 'js/selectize.min.js', ADTHRIVE_ADS_FILE ), array( 'jquery' ), ADTHRIVE_ADS_VERSION, true );
+		wp_enqueue_style( 'adthrive-ads-selectize', plugins_url( 'vendor/selectize/selectize.css', ADTHRIVE_ADS_FILE ), false, ADTHRIVE_ADS_VERSION );
+		wp_enqueue_script( 'adthrive-ads-selectize', plugins_url( 'vendor/selectize/selectize.min.js', ADTHRIVE_ADS_FILE ), array( 'jquery' ), ADTHRIVE_ADS_VERSION, true );
 
-		wp_enqueue_style( 'adthrive-ads', plugins_url( 'css/adthrive-ads.css', ADTHRIVE_ADS_FILE ), false, ADTHRIVE_ADS_VERSION );
-		wp_enqueue_script( 'adthrive-ads', plugins_url( 'js/adthrive-ads.js', ADTHRIVE_ADS_FILE ), array( 'adthrive-ads-selectize' ), ADTHRIVE_ADS_VERSION, true );
+		wp_enqueue_style( 'adthrive-ads', plugins_url( 'css/adthrive-ads.min.css', ADTHRIVE_ADS_FILE ), false, ADTHRIVE_ADS_VERSION );
+		wp_enqueue_script( 'adthrive-ads', plugins_url( 'js/adthrive-ads.min.js', ADTHRIVE_ADS_FILE ), array( 'adthrive-ads-selectize' ), ADTHRIVE_ADS_VERSION, true );
 	}
 
 	/**

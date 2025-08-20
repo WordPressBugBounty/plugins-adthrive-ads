@@ -10,8 +10,8 @@ if ( ! defined( 'ADTHRIVE_ADS_VERSION' ) ) {
 	header( 'HTTP/1.1 403 Forbidden' );
 	exit();
 }
-// phpcs:disable
-echo "<script>";
-echo file_get_contents(ADTHRIVE_ADS_PATH . 'js/min/adblock-recovery.min.js');
-echo "</script>";
+echo '<script>';
+// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
+echo file_get_contents( ADTHRIVE_ADS_PATH . 'js/adblock-recovery.min.js' );
 // phpcs:enable
+echo '</script>';

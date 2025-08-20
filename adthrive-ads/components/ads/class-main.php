@@ -596,14 +596,11 @@ class Main {
 	 * Check if cls insertion script tag has been inserted to page, if not set injectedFromPlugin to false
 	 */
 	private function check_cls_insertion() {
-		$cls = "'cls-'";
-		// phpcs:disable
 		echo '<script data-no-optimize="1" data-cfasync="false">';
 		echo '(function () {';
-		echo 'var clsElements = document.querySelectorAll("script[id^=' . $cls . ']"); window.adthriveCLS && clsElements && clsElements.length === 0 ? window.adthriveCLS.injectedFromPlugin = false : ""; ';
+		echo 'var clsElements = document.querySelectorAll("script[id^=\'cls-\']"); window.adthriveCLS && clsElements && clsElements.length === 0 ? window.adthriveCLS.injectedFromPlugin = false : ""; ';
 		echo '})();';
 		echo '</script>';
-		// phpcs:enable
 	}
 
 	/**
