@@ -7,7 +7,7 @@
  * Plugin Name: Raptive Ads
  * Plugin URI: http://www.raptive.com
  * Description: Raptive Ads
- * Version: 3.9.0
+ * Version: 3.10.0
  * Requires at least: 4.6
  * Requires PHP: 5.6
  * Author: Raptive
@@ -32,7 +32,7 @@
 
 defined( 'ABSPATH' ) || die;
 
-define( 'ADTHRIVE_ADS_VERSION', '3.9.0' );
+define( 'ADTHRIVE_ADS_VERSION', '3.10.0' );
 define( 'ADTHRIVE_ADS_FILE', __FILE__ );
 define( 'ADTHRIVE_ADS_PATH', plugin_dir_path( ADTHRIVE_ADS_FILE ) );
 define( 'ADTHRIVE_ADS_URL', trailingslashit( plugin_dir_url( ADTHRIVE_ADS_FILE ) ) );

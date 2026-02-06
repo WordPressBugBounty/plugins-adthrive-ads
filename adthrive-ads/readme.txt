@@ -1,8 +1,8 @@
 === Raptive Ads ===
 Contributors: raptive
 Tags: ads raptive
-Tested up to: 6.8
-Stable tag: 3.9.0
+Tested up to: 6.9
+Stable tag: 3.10.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -29,7 +29,15 @@ Raptive is a strategic partner equipping independent creators and enterprise pub
 2. Activate the plugin through the 'Plugins' screen in WordPress
 3. Use the Raptive->Ads screen to set your Site ID
 
+== Frequently Asked Questions ==
+= Where do I report security bugs found in this plugin? =
+
+Please report security bugs found in the source code of the Raptive Ads plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/9e5fc55b-5770-45fb-bdfc-7c60877bcca1). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
+
 == Changelog ==
+
+= 3.10.0 =
+* Improved ad block recovery
 
 = 3.9.0 =
 * Improved PHP 7.4+ compatibility
@@ -60,7 +68,4 @@ Raptive is a strategic partner equipping independent creators and enterprise pub
 
 = 3.7.1 =
 * Security patch
-
-= 3.6.3 =
-* Removed custom update checker
 

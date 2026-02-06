@@ -1,8 +1,8 @@
 {
-  "stable": "3.9.0",
+  "stable": "3.10.0",
   "tested": "6.8",
   "requires": "4.6",
   "requires_php": "5.6",
-  "version": "3.9.0",
-  "changelog": "== Changelog ==\n\n= 3.9.0 =\n* Improved PHP 7.4+ compatibility\n* Remove the unused features\n* Security patch\n\n= 3.8.0 =\n* Move Raptive's Comscore script into the plugin. This update allows the script to load quicker, providing more accurate tracking and measurement of Raptive traffic.\n\n= 3.7.7 =\n* Use IdentityAPI for privacy compliant localStorage access\n* Fix issue with adt_ei url params being cached in pagination links\n\n= 3.7.6 =\n* Ensure browser storage use with user consent\n\n= 3.7.5 =\n* Tested up to 6.8\n\n= 3.7.4 =\n* Security patch\n\n= 3.7.3 =\n* Layout bug fix\n\n= 3.7.2 =\n* Improved Pagination\n\n= 3.7.1 =\n* Security patch\n\n= 3.6.3 =\n* Removed custom update checker\n"
+  "version": "3.10.0",
+  "changelog": "== Changelog ==\n\n= 3.10.0 =\n* Improved ad block recovery\n\n= 3.9.0 =\n* Improved PHP 7.4+ compatibility\n* Remove the unused features\n* Security patch\n\n= 3.8.0 =\n* Move Raptive's Comscore script into the plugin. This update allows the script to load quicker, providing more accurate tracking and measurement of Raptive traffic.\n\n= 3.7.7 =\n* Use IdentityAPI for privacy compliant localStorage access\n* Fix issue with adt_ei url params being cached in pagination links\n\n= 3.7.6 =\n* Ensure browser storage use with user consent\n\n= 3.7.5 =\n* Tested up to 6.8\n\n= 3.7.4 =\n* Security patch\n\n= 3.7.3 =\n* Layout bug fix\n\n= 3.7.2 =\n* Improved Pagination\n\n= 3.7.1 =\n* Security patch\n"
 }
