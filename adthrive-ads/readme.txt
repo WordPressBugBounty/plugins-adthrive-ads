@@ -2,7 +2,7 @@
 Contributors: raptive
 Tags: ads raptive
 Tested up to: 6.9
-Stable tag: 3.10.0
+Stable tag: 3.11.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,9 @@ Please report security bugs found in the source code of the Raptive Ads plugin t
 
 == Changelog ==
 
+= 3.11.0 =
+* Improvements to ad recovery features
+
 = 3.10.0 =
 * Improved ad block recovery
 
@@ -65,7 +68,4 @@ Please report security bugs found in the source code of the Raptive Ads plugin t
 
 = 3.7.2 =
 * Improved Pagination
-
-= 3.7.1 =
-* Security patch
 
