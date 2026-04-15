@@ -46,6 +46,7 @@ class Main {
 				'upload-date' => '',
 				'add-meta' => $add_meta,
 				'player-type' => '',
+				'orientation' => '',
 				'override-embed' => '',
 			),
 			$atts,

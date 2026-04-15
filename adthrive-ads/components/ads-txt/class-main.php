@@ -95,6 +95,18 @@ class Main {
 	private function save() {
 		$response = wp_remote_get( $this->remote );
 
+		// Check for WP_Error
+		if ( is_wp_error( $response ) ) {
+			return;
+		}
+
+		// Validate response code
+		$response_code = wp_remote_retrieve_response_code( $response );
+		if ( $response_code >= 400 ) {
+			return;
+		}
+
+		// Only proceed if response is valid
 		if ( is_array( $response ) ) {
 			if ( \WP_Filesystem() ) {
 				global $wp_filesystem;

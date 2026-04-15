@@ -55,6 +55,7 @@ class Main {
 			'AdThrive_Ads\Components\Content_Specific_Playlists\Main',
 			'AdThrive_Ads\Components\No_AI\Main',
 			'AdThrive_Ads\Components\Logger\Main',
+			'AdThrive_Ads\Components\Wp_Rocket_Exclusion\Main',
 		);
 
 		$components = apply_filters( 'adthrive_ads_components', $components );

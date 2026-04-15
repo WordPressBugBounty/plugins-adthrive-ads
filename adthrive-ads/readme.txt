@@ -2,7 +2,7 @@
 Contributors: raptive
 Tags: ads raptive
 Tested up to: 6.9
-Stable tag: 3.11.0
+Stable tag: 3.12.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,11 @@ Please report security bugs found in the source code of the Raptive Ads plugin t
 
 == Changelog ==
 
+= 3.12.2 =
+* Support for ad recovery Essentials version
+* Support for a new orientation attribute in video shortcodes
+* Minor bug fixes and optimizations
+
 = 3.11.0 =
 * Improvements to ad recovery features
 
@@ -65,7 +70,4 @@ Please report security bugs found in the source code of the Raptive Ads plugin t
 
 = 3.7.3 =
 * Layout bug fix
-
-= 3.7.2 =
-* Improved Pagination
 
