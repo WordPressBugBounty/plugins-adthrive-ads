@@ -1,6 +1,6 @@
 {
-  "stable": "3.12.2",
-  "tested": "6.9",
+  "stable": "3.13.0",
+  "tested": "7.0",
   "requires": "4.6",
   "requires_php": "5.6"
 }

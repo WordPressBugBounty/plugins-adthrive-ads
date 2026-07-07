@@ -143,36 +143,44 @@ class Scheduled {
 	 */
 	public function sync_cls_data() {
 		$cls_optimization = \AdThrive_Ads\Options::get( 'cls_optimization' );
+		$status = array();
 
-		if ( 'on' === $cls_optimization ) {
-			$status = array();
-			$deployment_str = $this->get_deployment_json();
-			if ( $deployment_str && strlen( $deployment_str ) > 1 ) {
-				try {
-					$deployment = $this->parse_deployment_json( $deployment_str );
-					if ( isset( $deployment['stable'] ) ) {
+		$deployment_str = $this->get_deployment_json();
+		if ( $deployment_str && strlen( $deployment_str ) > 1 ) {
+			try {
+				$deployment = $this->parse_deployment_json( $deployment_str );
+				if ( isset( $deployment['stable'] ) ) {
+					// Delete old CLS files before syncing (only when CLS optimization is on).
+					// Must run before saving cls-deployments, since delete_cls_files removes that option.
+					if ( 'on' === $cls_optimization ) {
 						$this->delete_cls_files( false );
-						if ( isset( $deployment['test'] ) ) {
-							$status[ $deployment['test'] ] = $this->get_cls_files( $deployment['test'], false );
-						}
-						$status[ $deployment['stable'] ] = $this->get_cls_files( $deployment['stable'], true );
-						$deployment['updated_at'] = time();
-
-						$status['deployment'] = $deployment;
-						\AdThrive_Ads\Options::save_to_option( 'cls-deployments', $deployment );
 					}
-				} catch ( \Exception $e ) {
-					$status['error'] = $e->getMessage();
+
+					// Always save deployment info so parse_cls_deployment works for all scripts.
+					$deployment['updated_at'] = time();
+					\AdThrive_Ads\Options::save_to_option( 'cls-deployments', $deployment );
+
+					// Sync files - test branch first if exists, then stable.
+					if ( isset( $deployment['test'] ) ) {
+						$status[ $deployment['test'] ] = $this->get_cls_files( $deployment['test'], false );
+					}
+					$status[ $deployment['stable'] ] = $this->get_cls_files( $deployment['stable'], true );
+
+					$status['deployment'] = $deployment;
 				}
-			} else {
-				$status['error'] = 'Failed to retrieve data from deployment json endpoint.';
+			} catch ( \Exception $e ) {
+				$status['error'] = $e->getMessage();
 			}
-			if ( isset( $status['error'] ) ) {
-				$status['error_at'] = time();
-				\AdThrive_Ads\Options::save_to_option( 'cls-error', $status );
-			}
-			return $status;
+		} else {
+			$status['error'] = 'Failed to retrieve data from deployment json endpoint.';
 		}
+
+		if ( isset( $status['error'] ) ) {
+			$status['error_at'] = time();
+			\AdThrive_Ads\Options::save_to_option( 'cls-error', $status );
+		}
+
+		return $status;
 	}
 
 	/**
@@ -200,15 +208,36 @@ class Scheduled {
 	}
 
 	/**
-	 * Get CLS insertion files for given hash
+	 * Get CLS insertion files for given hash.
+	 * CLS-specific files only sync when CLS optimization is enabled.
+	 * Adblock scripts only sync when ad recovery is enabled.
+	 *
+	 * @param string $hash The build hash to sync.
+	 * @param bool   $is_stable Whether this is the stable build.
+	 * @return array Status of each file save.
 	 */
 	public function get_cls_files( $hash, $is_stable ) {
+		$cls_optimization = \AdThrive_Ads\Options::get( 'cls_optimization' );
+		$adblock_recovery = \AdThrive_Ads\Options::get( 'adblock_recovery' );
 		$base_url = 'https://ads.adthrive.com/builds/core/' . $hash . '/js/cls/';
+		$suffix = $is_stable ? 'stable' : $hash;
 		$status = array();
-		$status['insertion'] = \AdThrive_Ads\Options::save_to_option( 'cls-insertion.' . ( $is_stable ? 'stable' : $hash ), $this->get_remote_file( $base_url . 'cls-insertion.min.js' ) );
-		$status['header-insertion'] = \AdThrive_Ads\Options::save_to_option( 'cls-header-insertion.' . ( $is_stable ? 'stable' : $hash ), $this->get_remote_file( $base_url . 'cls-header-insertion.min.js' ) );
-		$status['disable-ads'] = \AdThrive_Ads\Options::save_to_option( 'cls-disable-ads.' . ( $is_stable ? 'stable' : $hash ), $this->get_remote_file( $base_url . 'cls-disable-ads.min.js' ) );
-		$status['comscore-loader'] = \AdThrive_Ads\Options::save_to_option( 'comscore-loader.' . ( $is_stable ? 'stable' : $hash ), $this->get_remote_file( $base_url . 'comscore-loader.min.js' ) );
+
+		// CLS-specific files - only sync when CLS optimization is enabled.
+		if ( 'on' === $cls_optimization ) {
+			$status['insertion'] = \AdThrive_Ads\Options::save_to_option( 'cls-insertion.' . $suffix, $this->get_remote_file( $base_url . 'cls-insertion.min.js' ) );
+			$status['header-insertion'] = \AdThrive_Ads\Options::save_to_option( 'cls-header-insertion.' . $suffix, $this->get_remote_file( $base_url . 'cls-header-insertion.min.js' ) );
+			$status['disable-ads'] = \AdThrive_Ads\Options::save_to_option( 'cls-disable-ads.' . $suffix, $this->get_remote_file( $base_url . 'cls-disable-ads.min.js' ) );
+			$status['comscore-loader'] = \AdThrive_Ads\Options::save_to_option( 'comscore-loader.' . $suffix, $this->get_remote_file( $base_url . 'comscore-loader.min.js' ) );
+		}
+
+		if ( 'off' !== $adblock_recovery ) {
+			// A single recovery script handles both Light and Essential modes (PE-739),
+			// selected at runtime via the data-abr-mode attribute on the script tag.
+			$status['adblock-detection'] = \AdThrive_Ads\Options::save_to_option( 'adblock-detection.' . $suffix, $this->get_remote_file( $base_url . 'adblock-detection.min.js' ) );
+			$status['adblock-recovery'] = \AdThrive_Ads\Options::save_to_option( 'adblock-recovery.' . $suffix, $this->get_remote_file( $base_url . 'adblock-recovery.min.js' ) );
+		}
+
 		return $status;
 	}
 
@@ -224,7 +253,8 @@ class Scheduled {
 	}
 
 	/**
-	 * Delete existing cls files, if delete_all is true, it will delete all fines under insertion/min, otherwise keep stable files
+	 * Delete existing cls files, if delete_all is true, it will delete all fines under insertion/min, otherwise keep stable files.
+	 * Note: adblock scripts are preserved as they operate independently of CLS optimization.
 	 */
 	public function delete_cls_files( $delete_all ) {
 		require_once ABSPATH . 'wp-admin/includes/file.php';
@@ -251,7 +281,11 @@ class Scheduled {
 		\AdThrive_Ads\Options::remove_option( 'cls-error' );
 		$options = get_option( 'adthrive_options' );
 		foreach ( $options as $k => $option ) {
-			if ( false !== strpos( $k, 'cls' ) ) {
+			// Skip adblock options - they operate independently of CLS optimization.
+			if ( false !== strpos( $k, 'adblock-' ) ) {
+				continue;
+			}
+			if ( false !== strpos( $k, 'cls' ) || false !== strpos( $k, 'comscore' ) ) {
 				if ( ! preg_match( '/stable$/', $k ) || $delete_all ) {
 					\AdThrive_Ads\Options::remove_option( $k );
 				}

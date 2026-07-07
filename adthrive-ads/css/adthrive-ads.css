@@ -6,6 +6,18 @@
   padding: 25px 10px;
 }
 
+/*
+ * WP 7.0 admin paints :checked via background-color, which collides with the
+ * vendored cmb2 ".cmb2-wrap input:focus { background: ... }" rule at equal
+ * specificity. Re-assert the checked background so the checkmark renders
+ * immediately on click instead of waiting for blur. See PE-1120.
+ */
+.cmb2-wrap input[type='checkbox']:checked,
+.cmb2-wrap input[type='radio']:checked {
+  background: var(--wp-admin-theme-color);
+  border-color: var(--wp-admin-theme-color);
+}
+
 .cmb2-id-adblock-recovery .cmb2-radio-list li {
   margin-bottom: 8px;
 }

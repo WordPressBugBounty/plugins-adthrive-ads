@@ -12,8 +12,9 @@ if ( ! defined( 'ADTHRIVE_ADS_VERSION' ) ) {
 }
 
 $recovery_mode = ! empty( $recovery_mode ) ? $recovery_mode : 'light';
-echo '<script data-cfasync="false" data-abr-mode="' . esc_attr( $recovery_mode ) . '">';
-// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-echo file_get_contents( ADTHRIVE_ADS_PATH . 'js/adblock-recovery.min.js' );
-// phpcs:enable
-echo '</script>';
+$cls_file_service = new \AdThrive_Ads\Components\Ads\Cls_File_Service();
+$cls_data = $cls_file_service->parse_cls_deployment();
+// A single recovery script handles both Light and Essential modes; the mode is
+// passed through via data-abr-mode and read at runtime from
+// document.currentScript.dataset.abrMode (PE-739).
+$cls_file_service->insert_cls_file( 'adblock-recovery', $cls_data, array( 'data-abr-mode' => $recovery_mode ) );

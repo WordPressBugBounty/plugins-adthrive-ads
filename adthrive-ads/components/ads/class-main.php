@@ -19,6 +19,8 @@ class Main {
 	 */
 	const OBJECT_TYPES = array( 'page', 'post' );
 
+	private $cls_file_service;
+
 	/**
 	 * Add hooks
 	 */
@@ -28,6 +30,8 @@ class Main {
 		add_filter( 'adthrive_ads_options', array( $this, 'add_options' ), 10, 1 );
 
 		add_action( 'cmb2_admin_init', array( $this, 'all_objects' ) );
+
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_post_meta_styles' ) );
 
 		add_action( 'wp_head', array( $this, 'head_scripts' ), 1 );
 
@@ -200,6 +204,31 @@ class Main {
 		return array(
 			'text' => $obj->name,
 			'value' => $obj->name,
+		);
+	}
+
+	/**
+	 * Enqueue plugin admin styles on the post/page edit screens so the
+	 * WP 7.0 :checked override (see PE-1120) applies to the post meta box,
+	 * not just the global options page.
+	 *
+	 * @param string $hook The current admin page hook.
+	 */
+	public function enqueue_post_meta_styles( $hook ) {
+		if ( 'post.php' !== $hook && 'post-new.php' !== $hook ) {
+			return;
+		}
+
+		$screen = get_current_screen();
+		if ( ! $screen || ! in_array( $screen->post_type, self::OBJECT_TYPES, true ) ) {
+			return;
+		}
+
+		wp_enqueue_style(
+			'adthrive-ads',
+			plugins_url( 'css/adthrive-ads.min.css', ADTHRIVE_ADS_FILE ),
+			false,
+			ADTHRIVE_ADS_VERSION
 		);
 	}
 
@@ -501,12 +530,13 @@ class Main {
 		if ( isset( $data['site_id'] ) && preg_match( '/[0-9a-f]{24}/i', $data['site_id'] ) && ! $thrive_architect_enabled && ! $widget_preview_active ) {
 			$body_classes = $this->body_class( array() );
 			if ( 'on' === $cls_optimization ) {
-				$cls_data = $this->parse_cls_deployment();
+				$cls_file_service = $this->get_cls_file_service();
+				$cls_data = $cls_file_service->parse_cls_deployment();
 				$data = array_merge( $data, $cls_data );
 
 				$site_ads = new \AdThrive_Ads\SiteAds();
 				$data['site_js'] = $site_ads->get_site_js();
-				$data['site_css'] = $this->get_option_value( 'site_css' );
+				$data['site_css'] = $cls_file_service->get_option_value( 'site_css' );
 				$disable_all = in_array( 'adthrive-disable-all', $body_classes, true );
 				if ( ! empty( $data['site_js'] ) ) {
 					$decoded_data = json_decode( $data['site_js'] );
@@ -515,16 +545,16 @@ class Main {
 
 						add_action(
 							'wp_head',
-							function () use ( $data ) {
-								$this->insert_cls_file( 'comscore-loader', $data );
+							function () use ( $data, $cls_file_service ) {
+								$cls_file_service->insert_cls_file( 'comscore-loader', $data );
 							},
 							100
 						);
 
 						add_action(
 							'wp_head',
-							function () use ( $data ) {
-								$this->insert_cls_file( 'cls-disable-ads', $data );
+							function () use ( $data, $cls_file_service ) {
+								$cls_file_service->insert_cls_file( 'cls-disable-ads', $data );
 							},
 							100
 						);
@@ -547,8 +577,8 @@ class Main {
 									if ( true === $adunit->dynamic->enabled && 1 === $adunit->dynamic->max && 0 === $adunit->dynamic->spacing && 1 === $adunit->sequence ) {
 										add_action(
 											'wp_head',
-											function () use ( $data ) {
-												$this->insert_cls_file( 'cls-header-insertion', $data );
+											function () use ( $data, $cls_file_service ) {
+												$cls_file_service->insert_cls_file( 'cls-header-insertion', $data );
 											},
 											101
 										);
@@ -559,8 +589,8 @@ class Main {
 
 						add_action(
 							'wp_footer',
-							function () use ( $data ) {
-								$this->insert_cls_file( 'cls-insertion', $data );
+							function () use ( $data, $cls_file_service ) {
+								$cls_file_service->insert_cls_file( 'cls-insertion', $data );
 								$this->check_cls_insertion();
 							},
 							1
@@ -604,107 +634,14 @@ class Main {
 	}
 
 	/**
-	 * Returns hash value specified from the url params
+	 * Get the CLS file service instance.
 	 */
-	public function get_remote_cls_hash() {
-		return isset( $_GET['plugin_remote_cls'] ) ? sanitize_text_field( wp_unslash( $_GET['plugin_remote_cls'] ) ) : '';
-	}
-
-	/**
-	 * Get cls file endpoint url for the hash. If no hash specified, then return empty string
-	 */
-	public function get_remote_cls_file_url( $filename ) {
-		$remote_cls_hash = $this->get_remote_cls_hash();
-
-		if ( '' !== $remote_cls_hash ) {
-			return esc_url( 'https://ads.adthrive.com/builds/core/' . $remote_cls_hash . '/js/cls/' . $filename . '.min.js?ts=' . strval( time() ) );
-		}
-		return '';
-	}
-
-	private $cls_files_inserted = array();
-	/**
-	 * Inserts cls file content to script tag
-	 * If debug options are enabled, makes request to remote url to fetch cls files.
-	 */
-	public function insert_cls_file( $filename, $data ) {
-		if ( in_array( $filename, $this->cls_files_inserted, true ) ) {
-			// Skip insertion when filename already inserted
-			return;
-		}
-		array_push( $this->cls_files_inserted, $filename );
-
-		$remote_cls_file_url = $this->get_remote_cls_file_url( $filename );
-		// phpcs:disable
-		if ( '' !== $remote_cls_file_url ) {
-			echo "<script data-no-optimize='1' data-cfasync='false' id='" . $filename . "-remote' src='" . $remote_cls_file_url . "'></script>";
-		} else {
-			$cls_content = $this->get_cls_file( $filename, $data );
-			if ( '' !== $cls_content['branch'] ) {
-				echo "<script data-no-optimize='1' data-cfasync='false' id='" . $filename . "-" . $cls_content['branch'] . "'>";
-				echo $cls_content['content'];
-				echo "</script>";
-			}
-		}
-		// phpcs:enable
-	}
-
-	/**
-	 * Get cls insertion file for the hash, if file for the hash is not found, return stable version
-	 */
-	public function get_cls_file( $filename, $data ) {
-		if ( isset( $data['cls_branch'] ) ) {
-			if ( isset( $data['cls_bucket'] ) && 'prod' !== $data['cls_bucket'] ) {
-				$option_content = $this->get_option_value( $filename . '.' . $data['cls_branch'] );
-				if ( $option_content ) {
-					return array(
-						'branch' => $data['cls_branch'],
-						'bucket' => $data['cls_bucket'],
-						'content' => $option_content,
-					);
-				}
-			}
-
-			$stable_option_content = $this->get_option_value( $filename . '.stable' );
-			if ( $stable_option_content ) {
-				return array(
-					'branch' => $data['cls_branch'],
-					'bucket' => $data['cls_bucket'],
-					'content' => $stable_option_content,
-				);
-			}
+	private function get_cls_file_service() {
+		if ( null === $this->cls_file_service ) {
+			$this->cls_file_service = new Cls_File_Service();
 		}
 
-		return array(
-			'branch' => '',
-			'bucket' => '',
-			'content' => '',
-		);
-	}
-
-	/**
-	 * Parser CLS deployment file from file system and return deployment info
-	 */
-	private function parse_cls_deployment() {
-		$output = array();
-
-		$cls_deployment = $this->get_option_value( 'cls-deployments' );
-		if ( $cls_deployment ) {
-			$output['cls_branch'] = $cls_deployment['stable'];
-			$output['cls_bucket'] = 'prod';
-
-			if ( isset( $cls_deployment['test'] ) ) {
-				$output['cls_branch'] = $cls_deployment['test'];
-				$output['cls_bucket'] = 'feature';
-			}
-
-			$cls_hash = $this->get_remote_cls_hash();
-			if ( strlen( $cls_hash ) > 0 ) {
-				$output['cls_branch'] = $cls_hash;
-				$output['cls_bucket'] = 'debug';
-			}
-		}
-		return $output;
+		return $this->cls_file_service;
 	}
 
 	/**
@@ -725,22 +662,5 @@ class Main {
 		);
 
 		return is_array( $terms ) ? array_map( array( $this, 'get_selectize' ), $terms ) : array();
-	}
-
-	/**
-	 * Get the Adthrive option value from WP transient or option storage
-	 */
-	private function get_option_value( $option_name ) {
-		$adthrive_options = get_option( 'adthrive_options' );
-
-		if ( false === $adthrive_options ) {
-			return false;
-		}
-
-		if ( isset( $adthrive_options[ $option_name ]['content'] ) ) {
-			return $adthrive_options[ $option_name ]['content'];
-		}
-
-		return false;
 	}
 }
