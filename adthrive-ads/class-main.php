@@ -122,6 +122,7 @@ class Main {
 	public function plugin_deactivated() {
 		wp_clear_scheduled_hook( 'adthrive_daily_event' );
 		wp_clear_scheduled_hook( 'adthrive_cls_daily_event' );
+		wp_clear_scheduled_hook( 'adthrive_ad_shield_daily_event' );
 		wp_clear_scheduled_hook( 'adthrive_site_daily_event' );
 	}
 

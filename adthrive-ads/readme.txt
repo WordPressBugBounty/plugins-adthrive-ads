@@ -1,8 +1,8 @@
 === Raptive Ads ===
 Contributors: raptive
 Tags: ads raptive
-Tested up to: 7.0
-Stable tag: 3.13.0
+Tested up to: 7.1
+Stable tag: 3.14.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -36,6 +36,11 @@ Please report security bugs found in the source code of the Raptive Ads plugin t
 
 == Changelog ==
 
+= 3.14.0 =
+* Fix Ad Block Recovery setting not showing the selected option
+* Remove AI signals toggle
+* Ad block recovery improvements
+
 = 3.13.0 =
 * Improved Wordpress v7 compatibility
 * Improved ad block recovery
@@ -68,7 +73,4 @@ Please report security bugs found in the source code of the Raptive Ads plugin t
 
 = 3.7.5 =
 * Tested up to 6.8
-
-= 3.7.4 =
-* Security patch
 

@@ -147,6 +147,7 @@ class Scheduled {
 
 		$deployment_str = $this->get_deployment_json();
 		if ( $deployment_str && strlen( $deployment_str ) > 1 ) {
+			do_action( 'adthrive_plugin_experiments_retrieved', $deployment_str );
 			try {
 				$deployment = $this->parse_deployment_json( $deployment_str );
 				if ( isset( $deployment['stable'] ) ) {
@@ -210,7 +211,7 @@ class Scheduled {
 	/**
 	 * Get CLS insertion files for given hash.
 	 * CLS-specific files only sync when CLS optimization is enabled.
-	 * Adblock scripts only sync when ad recovery is enabled.
+	 * Ad blocker detection keeps its CLS download when recovery is enabled.
 	 *
 	 * @param string $hash The build hash to sync.
 	 * @param bool   $is_stable Whether this is the stable build.
@@ -231,11 +232,9 @@ class Scheduled {
 			$status['comscore-loader'] = \AdThrive_Ads\Options::save_to_option( 'comscore-loader.' . $suffix, $this->get_remote_file( $base_url . 'comscore-loader.min.js' ) );
 		}
 
+		// Detection keeps its existing CLS URL; recovery is updated separately.
 		if ( 'off' !== $adblock_recovery ) {
-			// A single recovery script handles both Light and Essential modes (PE-739),
-			// selected at runtime via the data-abr-mode attribute on the script tag.
 			$status['adblock-detection'] = \AdThrive_Ads\Options::save_to_option( 'adblock-detection.' . $suffix, $this->get_remote_file( $base_url . 'adblock-detection.min.js' ) );
-			$status['adblock-recovery'] = \AdThrive_Ads\Options::save_to_option( 'adblock-recovery.' . $suffix, $this->get_remote_file( $base_url . 'adblock-recovery.min.js' ) );
 		}
 
 		return $status;

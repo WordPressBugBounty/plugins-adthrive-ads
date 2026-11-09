@@ -16,7 +16,6 @@ class Main {
 	 */
 	public function setup() {
 		add_filter( 'adthrive_ads_options', array( $this, 'add_options' ) );
-		add_action( 'wp_head', array( $this, 'append_ai_metadata' ) );
 		add_filter( 'robots_txt', array( $this, 'update_robot_file' ), 10, 1 );
 	}
 
@@ -27,19 +26,6 @@ class Main {
 	 */
 	public function add_options( $cmb ) {
 		require_once ABSPATH . 'wp-admin/includes/file.php';
-
-		$cmb->add_field(
-			array(
-				'name' => __( 'NoAI Meta Tags', 'adthrive_ads' ),
-				'desc' => __(
-					'Enable “noai” and “noimageai” meta tags to tell AI systems not to use your content without your consent to train their models.<br/>
-				<a href="https://help.raptive.com/hc/en-us/articles/13764527993755" target="_blank" rel="noopener noreferrer">Read more</a> about this setting and language to add to your Terms of Service.',
-					'adthrive_ads'
-				),
-				'id' => 'no_ai',
-				'type' => 'checkbox',
-			)
-		);
 
 		if ( \WP_Filesystem() ) {
 			global $wp_filesystem;
@@ -195,15 +181,6 @@ class Main {
 		);
 
 		return $cmb;
-	}
-
-	/**
-	 * Adds AI metadata to page if option is selected
-	 */
-	public function append_ai_metadata() {
-		if ( 'on' === \AdThrive_Ads\Options::get( 'no_ai' ) ) {
-			echo '<meta name="robots" content="noai, noimageai">';
-		}
 	}
 
 	/**

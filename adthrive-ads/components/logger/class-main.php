@@ -50,7 +50,6 @@ class Main {
 						'wp' => get_bloginfo( 'version' ),
 						'php' => phpversion(),
 						'autoUpdate' => $this->is_auto_update(),
-						'noai' => $this->get_noai_value(),
 					)
 				),
 			);
@@ -71,12 +70,5 @@ class Main {
 			}
 		);
 		return count( $auto_updates ) >= 1;
-	}
-
-	/**
-	 * Retrieves the value for the noai option
-	 */
-	private function get_noai_value() {
-		return \AdThrive_Ads\Options::get( 'no_ai' );
 	}
 }

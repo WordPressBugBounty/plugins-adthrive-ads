@@ -247,6 +247,44 @@ class Options {
 	}
 
 	/**
+	 * Return content saved in the shared AdThrive option.
+	 *
+	 * @param string $option_name Saved option name.
+	 * @return mixed|false
+	 */
+	public static function get_saved_option( $option_name ) {
+		$adthrive_options = get_option( 'adthrive_options' );
+		if ( ! is_array( $adthrive_options ) || ! isset( $adthrive_options[ $option_name ]['content'] ) ) {
+			return false;
+		}
+
+		return $adthrive_options[ $option_name ]['content'];
+	}
+
+	/**
+	 * Remove saved entries whose names begin with a prefix.
+	 *
+	 * @param string $prefix Saved option-name prefix.
+	 * @return bool Whether an entry was removed.
+	 */
+	public static function remove_options_by_prefix( $prefix ) {
+		$adthrive_options = get_option( 'adthrive_options' );
+		if ( ! is_array( $adthrive_options ) ) {
+			return false;
+		}
+
+		$removed = false;
+		foreach ( array_keys( $adthrive_options ) as $option_name ) {
+			if ( 0 === strpos( $option_name, $prefix ) ) {
+				unset( $adthrive_options[ $option_name ] );
+				$removed = true;
+			}
+		}
+
+		return $removed ? update_option( 'adthrive_options', $adthrive_options ) : false;
+	}
+
+	/**
 	 * Remove Adthrive WP Option
 	 */
 	public static function remove_option( $option_name ) {

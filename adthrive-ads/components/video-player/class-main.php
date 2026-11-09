@@ -26,8 +26,8 @@ class Main {
 	 */
 	public function in_post_video_player_shortcode( $atts ) {
 		$disable_meta_on_site = \AdThrive_Ads\Options::get( 'disable_video_metadata' );
-		$disable_meta_in_post = get_post_meta( get_the_ID(), 'adthrive_ads_disable_metadata' );
-		$enable_meta_in_post = get_post_meta( get_the_ID(), 'adthrive_ads_enable_metadata' );
+		$disable_meta_in_post = get_post_meta( get_the_ID(), 'adthrive_ads_disable_metadata', false );
+		$enable_meta_in_post = get_post_meta( get_the_ID(), 'adthrive_ads_enable_metadata', false );
 
 		$add_meta = 'on';
 		if ( isset( $disable_meta_on_site ) && 'on' === $disable_meta_on_site ) {
