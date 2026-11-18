@@ -2,7 +2,7 @@
 Contributors: raptive
 Tags: ads raptive
 Tested up to: 7.1
-Stable tag: 3.14.0
+Stable tag: 3.15.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,6 +35,9 @@ Raptive is a strategic partner equipping independent creators and enterprise pub
 Please report security bugs found in the source code of the Raptive Ads plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/9e5fc55b-5770-45fb-bdfc-7c60877bcca1). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
 
 == Changelog ==
+
+= 3.15.0 =
+* Add backup domains for ad scripts
 
 = 3.14.0 =
 * Fix Ad Block Recovery setting not showing the selected option
@@ -70,7 +73,4 @@ Please report security bugs found in the source code of the Raptive Ads plugin t
 
 = 3.7.6 =
 * Ensure browser storage use with user consent
-
-= 3.7.5 =
-* Tested up to 6.8
 

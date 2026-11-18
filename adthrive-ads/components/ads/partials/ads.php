@@ -22,11 +22,14 @@ if ( ! defined( 'ADTHRIVE_ADS_VERSION' ) ) {
 
 	var commitParam = (w.adthriveCLS && w.adthriveCLS.bucket !== 'prod' && w.adthriveCLS.branch) ? '&commit=' + w.adthriveCLS.branch : '';
 
-	var s = d.createElement('script');
-	s.async = true;
-	s.referrerpolicy='no-referrer-when-downgrade';
-	s.src = 'https://' + w.adthrive.host + '/sites/<?php echo esc_attr( $data['site_id'] ); ?>/ads.min.js?referrer=' + w.encodeURIComponent(w.location.href) + commitParam + '&cb=' + (Math.floor(Math.random() * 100) + 1) + '<?php echo 'true' === $data['plugin_debug'] ? '&debug=true' : ''; ?>';
-	var n = d.getElementsByTagName('script')[0];
-	n.parentNode.insertBefore(s, n);
+	var hosts = <?php echo wp_json_encode( $data['script_hosts'] ); ?>;
+	hosts.forEach(function(host) {
+		var s = d.createElement('script');
+		s.async = true;
+		s.referrerpolicy='no-referrer-when-downgrade';
+		s.src = 'https://' + host + '/sites/<?php echo esc_attr( $data['site_id'] ); ?>/ads.min.js?referrer=' + w.encodeURIComponent(w.location.href) + commitParam + '&sv=1.0.0&cb=' + (Math.floor(Math.random() * 100) + 1) + '<?php echo 'true' === $data['plugin_debug'] ? '&debug=true' : ''; ?>';
+		var n = d.getElementsByTagName('script')[0];
+		n.parentNode.insertBefore(s, n);
+	});
 })(window, document);
 </script>

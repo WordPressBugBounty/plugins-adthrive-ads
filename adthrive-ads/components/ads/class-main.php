@@ -19,6 +19,8 @@ class Main {
 	 */
 	const OBJECT_TYPES = array( 'page', 'post' );
 
+	const SCRIPT_HOSTS = array( 'ads.adthrive.com', 'ads.rapt-c-0.net', 'ads.rapt-c-1.net' );
+
 	private $cls_file_service;
 
 	/**
@@ -515,6 +517,7 @@ class Main {
 	 * Add the AdThrive ads script
 	 */
 	private function ad_head() {
+		$data['script_hosts'] = self::SCRIPT_HOSTS;
 		$data['site_id'] = \AdThrive_Ads\Options::get( 'site_id' );
 		$cls_optimization = \AdThrive_Ads\Options::get( 'cls_optimization' );
 		// if cls_optimization is false in the plugin, cls could still be on in ads min, so we set this here
@@ -609,9 +612,11 @@ class Main {
 	 * Adthrive Preload hook - adds dns prefetch and preconnect elements to adthrive resources
 	 */
 	private function adthrive_preload() {
-		echo '<link rel="dns-prefetch" href="https://ads.adthrive.com/">';
-		echo '<link rel="preconnect" href="https://ads.adthrive.com/">';
-		echo '<link rel="preconnect" href="https://ads.adthrive.com/" crossorigin>';
+		foreach ( self::SCRIPT_HOSTS as $host ) {
+			echo '<link rel="dns-prefetch" href="https://' . esc_attr( $host ) . '/">';
+			echo '<link rel="preconnect" href="https://' . esc_attr( $host ) . '/">';
+			echo '<link rel="preconnect" href="https://' . esc_attr( $host ) . '/" crossorigin>';
+		}
 	}
 
 	/**
